@@ -2,6 +2,7 @@
 
 require_relative 'acp/version'
 require_relative 'acp/helpers/protocol'
+require_relative 'acp/helpers/capabilities'
 
 module Legion
   module Extensions
