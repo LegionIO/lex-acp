@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'acp/version'
+require_relative 'acp/helpers/protocol'
 
 module Legion
   module Extensions
