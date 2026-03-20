@@ -4,6 +4,7 @@ require_relative 'acp/version'
 require_relative 'acp/helpers/protocol'
 require_relative 'acp/helpers/capabilities'
 require_relative 'acp/transport/stdio'
+require_relative 'acp/runners/agent'
 
 module Legion
   module Extensions
