@@ -54,7 +54,7 @@ module Legion
           private
 
           def submit_acp_task(agent_url, task, timeout)
-            uri = URI.join(agent_url.chomp('/') + '/', 'tasks')
+            uri = URI.join("#{agent_url.chomp('/')}/", 'tasks')
             http = Net::HTTP.new(uri.host, uri.port)
             http.use_ssl = uri.scheme == 'https'
             http.open_timeout = timeout
@@ -82,9 +82,7 @@ module Legion
           end
 
           def mesh_registry
-            @mesh_registry ||= if defined?(Legion::Extensions::Mesh::Helpers::Registry)
-                                 Legion::Extensions::Mesh::Helpers::Registry.new
-                               end
+            @mesh_registry ||= (Legion::Extensions::Mesh::Helpers::Registry.new if defined?(Legion::Extensions::Mesh::Helpers::Registry))
           end
 
           def acp_settings

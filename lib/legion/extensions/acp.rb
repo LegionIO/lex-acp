@@ -4,6 +4,7 @@ require 'legion/extensions/acp/version'
 require 'legion/extensions/acp/helpers/agent_card'
 require 'legion/extensions/acp/helpers/task_translator'
 require 'legion/extensions/acp/runners/acp'
+require 'legion/extensions/acp/actors/discovery'
 
 module Legion
   module Extensions
