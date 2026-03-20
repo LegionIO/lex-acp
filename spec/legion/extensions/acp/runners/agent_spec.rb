@@ -121,4 +121,113 @@ RSpec.describe Legion::Extensions::Acp::Runners::Agent do
       expect(result[:error][:code]).to eq(-32_601)
     end
   end
+
+  describe '#handle_session_prompt' do
+    before do
+      resp = agent.handle_session_new({ id: 2, method: 'session/new', params: {} })
+      @session_id = resp[:sessionId]
+    end
+
+    context 'when LLM is available' do
+      let(:mock_chat) { double('chat') }
+      let(:mock_response) { double('response', content: 'Hello world', input_tokens: 10, output_tokens: 5) }
+
+      before do
+        stub_const('Legion::LLM', Module.new)
+        allow(Legion::LLM).to receive(:started?).and_return(true)
+        allow(Legion::LLM).to receive(:chat).and_return(mock_chat)
+        allow(mock_chat).to receive(:ask).and_yield(double(content: 'Hello')).and_return(mock_response)
+        allow(mock_chat).to receive(:with_instructions)
+      end
+
+      it 'streams chunks via session/update notifications' do
+        msg = { id: 10, method: 'session/prompt', params: { sessionId: @session_id, prompt: { userMessage: { content: 'Hi' } } } }
+        agent.handle_session_prompt(msg)
+        expect(transport).to have_received(:send_notification).with('session/update', hash_including(:contentBlock))
+      end
+
+      it 'returns a PromptResponse with end_turn stop reason' do
+        msg = { id: 10, method: 'session/prompt', params: { sessionId: @session_id, prompt: { userMessage: { content: 'Hi' } } } }
+        result = agent.handle_session_prompt(msg)
+        expect(result[:stopReason]).to eq('end_turn')
+        expect(result[:content]).to eq('Hello world')
+      end
+    end
+
+    context 'when LLM is not available' do
+      before do
+        hide_const('Legion::LLM') if defined?(Legion::LLM)
+      end
+
+      it 'returns an error' do
+        msg = { id: 10, method: 'session/prompt', params: { sessionId: @session_id, prompt: { userMessage: { content: 'Hi' } } } }
+        result = agent.handle_session_prompt(msg)
+        expect(result[:error]).to include('LLM')
+      end
+    end
+
+    it 'returns error for unknown session' do
+      msg = { id: 10, method: 'session/prompt', params: { sessionId: 'bad', prompt: { userMessage: { content: 'Hi' } } } }
+      result = agent.handle_session_prompt(msg)
+      expect(result[:error]).to include('not found')
+    end
+
+    context 'when session is cancelled mid-prompt' do
+      let(:mock_chat) { double('chat') }
+
+      before do
+        stub_const('Legion::LLM', Module.new)
+        allow(Legion::LLM).to receive(:started?).and_return(true)
+        allow(Legion::LLM).to receive(:chat).and_return(mock_chat)
+        allow(mock_chat).to receive(:with_instructions)
+        allow(mock_chat).to receive(:ask) do |_msg, &block|
+          agent.handle_session_cancel({ params: { sessionId: @session_id } })
+          block&.call(double(content: 'partial'))
+          double(content: 'partial', input_tokens: 5, output_tokens: 2)
+        end
+      end
+
+      it 'returns cancelled stop reason' do
+        msg = { id: 10, method: 'session/prompt', params: { sessionId: @session_id, prompt: { userMessage: { content: 'Hi' } } } }
+        result = agent.handle_session_prompt(msg)
+        expect(result[:stopReason]).to eq('cancelled')
+      end
+    end
+  end
+
+  describe 'custom commands via prompt' do
+    before do
+      resp = agent.handle_session_new({ id: 2, method: 'session/new', params: {} })
+      @session_id = resp[:sessionId]
+    end
+
+    context 'run_task command' do
+      before do
+        stub_const('Legion::Ingress', Module.new)
+        allow(Legion::Ingress).to receive(:run).and_return({ success: true, data: 'result' })
+      end
+
+      it 'routes /run_task to Ingress.run' do
+        msg = {
+          id: 20, method: 'session/prompt',
+          params: { sessionId: @session_id, prompt: { userMessage: { content: '/run_task health.runners.health.update hostname:test' } } }
+        }
+        result = agent.handle_session_prompt(msg)
+        expect(result[:stopReason]).to eq('end_turn')
+        expect(Legion::Ingress).to have_received(:run)
+      end
+    end
+
+    context 'list_extensions command' do
+      it 'returns extension list as text' do
+        msg = {
+          id: 21, method: 'session/prompt',
+          params: { sessionId: @session_id, prompt: { userMessage: { content: '/list_extensions' } } }
+        }
+        result = agent.handle_session_prompt(msg)
+        expect(result[:stopReason]).to eq('end_turn')
+        expect(result[:content]).to be_a(String)
+      end
+    end
+  end
 end
