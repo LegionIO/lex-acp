@@ -7,8 +7,8 @@ RSpec.describe Legion::Extensions::Acp::Helpers::AgentCard do
   describe '.build' do
     it 'returns a hash with required ACP fields' do
       card = described_class.build(
-        name: 'worker-01',
-        url: 'https://legion:4567/api/acp',
+        name:         'worker-01',
+        url:          'https://legion:4567/api/acp',
         capabilities: %i[code_review planning]
       )
       expect(card[:name]).to eq('worker-01')

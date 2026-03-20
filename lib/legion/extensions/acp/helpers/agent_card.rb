@@ -37,12 +37,12 @@ module Legion
             return nil unless data[:name] && data[:url]
 
             data
-          rescue ::JSON::ParserError, StandardError
+          rescue StandardError
             nil
           end
 
           def fetch(base_url, timeout: FETCH_TIMEOUT)
-            uri = URI.join(base_url.chomp('/') + '/', CARD_PATH.delete_prefix('/'))
+            uri = URI.join("#{base_url.chomp('/')}/", CARD_PATH.delete_prefix('/'))
             http = Net::HTTP.new(uri.host, uri.port)
             http.use_ssl = uri.scheme == 'https'
             http.open_timeout = timeout

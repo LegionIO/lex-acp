@@ -14,7 +14,7 @@ module Legion
   end
 
   module Settings
-    def self.[](key)
+    def self.[](_key)
       {}
     end
   end
