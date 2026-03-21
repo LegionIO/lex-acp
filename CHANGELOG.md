@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1] - 2026-03-21
+
+### Changed
+- Merged extension scaffold and ACP client implementations
+- Added ACP discovery actor for scanning configured agent URLs
+- Spec suite at 73 examples (0 failures)
+
 ## [0.1.0] - 2026-03-20
 
 ### Added
