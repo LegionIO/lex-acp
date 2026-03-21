@@ -1,21 +1,28 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
+require 'json'
 
-module Legion
-  module Logging
-    def self.debug(_msg); end
+unless defined?(Legion::Logging)
+  module Legion
+    module Logging
+      def self.debug(_msg); end
 
-    def self.info(_msg); end
+      def self.info(_msg); end
 
-    def self.warn(_msg); end
+      def self.warn(_msg); end
 
-    def self.error(_msg); end
+      def self.error(_msg); end
+    end
   end
+end
 
-  module Settings
-    def self.[](_key)
-      {}
+unless defined?(Legion::Settings)
+  module Legion
+    module Settings
+      def self.[](_key)
+        {}
+      end
     end
   end
 end

@@ -8,3 +8,8 @@
 - `TaskTranslator` helper: bidirectional ACP-to-Legion task translation
 - `Runners::Acp`: `invoke_agent`, `register_external`, `list_agents`, `discover_agents`
 - `Actors::Discovery`: scans configured ACP agent URLs every 300 seconds
+- JSON-RPC 2.0 protocol layer (Helpers::Protocol)
+- Agent capabilities builder (Helpers::Capabilities)
+- Stdio transport (Transport::Stdio)
+- Agent-side ACP handlers (Runners::Agent)
+- CLI entry point (`legion acp`)
