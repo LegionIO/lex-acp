@@ -10,7 +10,7 @@ Legion Extension that implements the Agent Client Protocol (ACP) so code editors
 
 **GitHub**: https://github.com/LegionIO/lex-acp
 **License**: MIT
-**Version**: 0.1.0
+**Version**: 0.1.1
 
 ## Architecture
 
@@ -41,7 +41,7 @@ CLI entry point: `legion acp` (default: `legion acp stdio`) — defined in `Legi
 |-------|-------|
 | Gem name | `lex-acp` |
 | Module | `Legion::Extensions::Acp` |
-| Version | `0.1.0` |
+| Version | `0.1.1` |
 | Ruby | `>= 3.4` |
 | Runtime deps | `json`, `securerandom` (stdlib only) |
 | Optional | `legion-llm` (prompt handling) |
@@ -105,7 +105,7 @@ When `legion-llm` is unavailable: returns `{ error: 'LLM not available...' }`.
 
 ```bash
 bundle install
-bundle exec rspec     # 60 examples, 0 failures
+bundle exec rspec
 bundle exec rubocop   # 0 offenses
 ```
 

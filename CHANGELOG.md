@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.2] - 2026-03-22
+
+### Changed
+- Migrated to Tier 1 sub-gem helpers: added runtime deps for legion-cache, legion-crypt, legion-data, legion-json, legion-logging, legion-settings, legion-transport
+- Replaced inline stubs in spec_helper with real sub-gem helper requires and Helpers::Lex composite module
+
 ## [0.1.1] - 2026-03-21
 
 ### Changed
