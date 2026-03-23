@@ -86,7 +86,7 @@ module Legion
           end
 
           def acp_settings
-            Legion::Settings[:acp] || {}
+            settings[:acp] || {}
           rescue StandardError
             {}
           end
