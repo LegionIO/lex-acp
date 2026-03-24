@@ -104,7 +104,8 @@ module Legion
             return { error: 'LLM not available — prompt handling requires legion-llm' } unless Helpers::Capabilities.llm_available?
 
             session[:cancelled] = false
-            chat = Legion::LLM.chat(model: session[:config]['model'], provider: session[:config]['provider']&.to_sym)
+            chat = Legion::LLM.chat(model: session[:config]['model'], provider: session[:config]['provider']&.to_sym,
+                                    caller: { extension: 'lex-acp', operation: 'agent', session_id: session[:id] })
             chat.with_instructions("You are LegionIO, an async job engine coding assistant. Mode: #{session[:mode]}.")
 
             full_content = +''

@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.1.3] - 2026-03-23
+
+### Changed
+- Add `caller:` identity to `Legion::LLM.chat` call in `Runners::Agent#handle_session_prompt` with `extension: 'lex-acp'`, `operation: 'agent'`, and `session_id`
+
 ## [0.1.2] - 2026-03-22
 
 ### Changed
