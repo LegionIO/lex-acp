@@ -3,7 +3,7 @@
 module Legion
   module Extensions
     module Acp
-      module Actors
+      module Actor
         class Discovery < (defined?(Legion::Extensions::Actors::Every) ? Legion::Extensions::Actors::Every : Object)
           class << self
             attr_accessor :time

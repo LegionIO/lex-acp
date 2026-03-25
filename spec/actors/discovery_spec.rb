@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Legion::Extensions::Acp::Actors::Discovery do
+RSpec.describe Legion::Extensions::Acp::Actor::Discovery do
   it 'defines a 300 second interval' do
     expect(described_class.time).to eq(300)
   end
