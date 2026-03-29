@@ -1,7 +1,7 @@
 # lex-acp: Agent Client Protocol Adapter for LegionIO
 
 **Repository Level 3 Documentation**
-- **Parent**: `/Users/miverso2/rubymine/legion/extensions-core/CLAUDE.md`
+- **Parent**: `/Users/miverso2/rubymine/legion/extensions-agentic/CLAUDE.md`
 - **Grandparent**: `/Users/miverso2/rubymine/legion/CLAUDE.md`
 
 ## Purpose
@@ -10,7 +10,7 @@ Legion Extension that implements the Agent Client Protocol (ACP) so code editors
 
 **GitHub**: https://github.com/LegionIO/lex-acp
 **License**: MIT
-**Version**: 0.1.1
+**Version**: 0.1.4
 
 ## Architecture
 
@@ -41,7 +41,7 @@ CLI entry point: `legion acp` (default: `legion acp stdio`) — defined in `Legi
 |-------|-------|
 | Gem name | `lex-acp` |
 | Module | `Legion::Extensions::Acp` |
-| Version | `0.1.1` |
+| Version | `0.1.4` |
 | Ruby | `>= 3.4` |
 | Runtime deps | `json`, `securerandom` (stdlib only) |
 | Optional | `legion-llm` (prompt handling) |
