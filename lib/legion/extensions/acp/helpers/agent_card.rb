@@ -37,7 +37,7 @@ module Legion
             return nil unless data[:name] && data[:url]
 
             data
-          rescue StandardError
+          rescue StandardError => _e
             nil
           end
 
@@ -52,7 +52,7 @@ module Legion
             return nil unless response.is_a?(Net::HTTPSuccess)
 
             parse(response.body)
-          rescue StandardError
+          rescue StandardError => _e
             nil
           end
         end

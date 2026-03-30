@@ -6,7 +6,7 @@ module Legion
   module Extensions
     module Acp
       module Runners
-        class Agent
+        class Agent # rubocop:disable Legion/Extension/RunnerMustBeModule
           attr_reader :client_info, :sessions
 
           def initialize(transport:)
@@ -20,7 +20,7 @@ module Legion
             method_name = message[:method]
             handler = @handlers[method_name]
             unless handler
-              return Helpers::Protocol.error_response(
+              return Helpers::Protocol.error_response( # rubocop:disable Legion/Extension/RunnerReturnHash
                 id:      message[:id],
                 code:    Helpers::Protocol::METHOD_NOT_FOUND,
                 message: "Method not found: #{method_name}"
@@ -99,13 +99,14 @@ module Legion
 
             user_text = msg.dig(:params, :prompt, :userMessage, :content) || ''
 
-            return handle_command(session, user_text) if user_text.start_with?('/')
+            return handle_command(session, user_text) if user_text.start_with?('/') # rubocop:disable Legion/Extension/RunnerReturnHash
 
             return { error: 'LLM not available — prompt handling requires legion-llm' } unless Helpers::Capabilities.llm_available?
 
             session[:cancelled] = false
-            chat = Legion::LLM.chat(model: session[:config]['model'], provider: session[:config]['provider']&.to_sym,
-                                    caller: { extension: 'lex-acp', operation: 'agent', session_id: session[:id] })
+            chat = Legion::LLM.chat(model:    session[:config]['model'], # rubocop:disable Legion/HelperMigration/DirectLlm
+                                    provider: session[:config]['provider']&.to_sym,
+                                    caller:   { extension: 'lex-acp', operation: 'agent', session_id: session[:id] })
             chat.with_instructions("You are LegionIO, an async job engine coding assistant. Mode: #{session[:mode]}.")
 
             full_content = +''

@@ -11,6 +11,8 @@ module Legion
     module Acp
       module Runners
         module Acp
+          extend self
+
           def invoke_agent(agent_url:, task:, timeout: 30, **)
             card = Helpers::AgentCard.fetch(agent_url)
             return { success: false, reason: :unreachable } unless card
@@ -77,17 +79,17 @@ module Legion
               endpoint:     agent_url,
               source:       :acp
             )
-          rescue StandardError
+          rescue StandardError => _e
             nil
           end
 
           def mesh_registry
-            @mesh_registry ||= (Legion::Extensions::Mesh::Helpers::Registry.new if defined?(Legion::Extensions::Mesh::Helpers::Registry))
+            @mesh_registry ||= (Registry.instance if defined?(Legion::Extensions::Mesh::Helpers::Registry))
           end
 
           def acp_settings
             settings[:acp] || {}
-          rescue StandardError
+          rescue StandardError => _e
             {}
           end
         end
