@@ -4,9 +4,9 @@ module Legion
   module Extensions
     module Acp
       module Actor
-        class Discovery < (defined?(Legion::Extensions::Actors::Every) ? Legion::Extensions::Actors::Every : Object)
+        class Discovery < (defined?(Legion::Extensions::Actors::Every) ? Legion::Extensions::Actors::Every : Object) # rubocop:disable Legion/Extension/ActorInheritance
           class << self
-            attr_accessor :time
+            attr_accessor :time # rubocop:disable ThreadSafety/ClassAndModuleAttributes
           end
           self.time = 300
 

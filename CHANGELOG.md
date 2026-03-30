@@ -5,6 +5,11 @@
 ### Fixed
 - Fix actor discovery: rename `module Actors` to `module Actor` (singular) to match framework convention
 
+## [0.1.5] - 2026-03-30
+
+### Changed
+- update to rubocop-legion 0.1.7, resolve all offenses
+
 ## [0.1.3] - 2026-03-23
 
 ### Changed

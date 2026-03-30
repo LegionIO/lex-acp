@@ -25,7 +25,7 @@ module Legion
             return error_response(id: data[:id], code: INVALID_REQUEST, message: 'Invalid Request') if data.key?(:id) && !data.key?(:method)
 
             data
-          rescue ::JSON::ParserError
+          rescue ::JSON::ParserError => _e
             error_response(id: nil, code: PARSE_ERROR, message: 'Parse error')
           end
 

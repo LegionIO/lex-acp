@@ -14,7 +14,7 @@ module Legion
             @open   = false
           end
 
-          def run(&handler)
+          def run
             @open = true
             while @open
               msg = Helpers::Protocol.read(@input)
@@ -27,7 +27,7 @@ module Legion
 
               is_notification = !msg.key?(:id)
 
-              result = handler.call(msg)
+              result = yield(msg)
 
               next if is_notification
 
@@ -40,7 +40,7 @@ module Legion
                      end
               send_response(resp)
             end
-          rescue Interrupt
+          rescue Interrupt => _e
             # Clean exit on SIGINT
           end
 
