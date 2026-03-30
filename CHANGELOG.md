@@ -2,9 +2,6 @@
 
 ## [Unreleased]
 
-### Fixed
-- Fix actor discovery: rename `module Actors` to `module Actor` (singular) to match framework convention
-
 ## [0.1.5] - 2026-03-30
 
 ### Changed
